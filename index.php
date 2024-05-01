@@ -1,54 +1,59 @@
-<?php
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name - Personal Work Profile</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Your Name</h1>
+        <nav>
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
-function cwpai_custom_post_type() {
-    register_post_type('cwpai_profile',
-        array(
-            'labels' => array(
-                'name' => __('Profiles', 'codewp'),
-                'singular_name' => __('Profile', 'codewp')
-            ),
-            'public' => true,
-            'has_archive' => true,
-            'supports' => array('title', 'editor', 'thumbnail'),
-            'rewrite' => array('slug' => 'profiles'),
-        )
-    );
-}
-add_action('init', 'cwpai_custom_post_type');
+    <main>
+        <section id="about">
+            <!-- About Section -->
+            <h2>About Me</h2>
+            <p>Write a brief introduction about yourself, your skills, and your passions.</p>
+            <img src="profile_picture.jpg" alt="Your Profile Picture">
+        </section>
 
-function cwpai_add_custom_meta_boxes() {
-    add_meta_box(
-        'cwpai_profile_details',
-        __('Profile Details', 'codewp'),
-        'cwpai_profile_details_callback',
-        'cwpai_profile',
-        'normal',
-        'default'
-    );
-}
-add_action('add_meta_boxes', 'cwpai_add_custom_meta_boxes');
+        <section id="experience">
+            <!-- Experience Section -->
+            <h2>Experience</h2>
+            <p>Detail your work experiences, projects, and achievements.</p>
+            <ul>
+                <li>Experience 1</li>
+                <li>Experience 2</li>
+                <!-- Add more experiences -->
+            </ul>
+        </section>
 
-function cwpai_profile_details_callback($post) {
-    wp_nonce_field('cwpai_profile_save_meta_box_data', 'cwpai_profile_meta_box_nonce');
-    $experience = get_post_meta($post->ID, '_cwpai_profile_experience', true);
-    $certificates = get_post_meta($post->ID, '_cwpai_profile_certificates', true);
-    $pictures = get_post_meta($post->ID, '_cwpai_profile_pictures', true);
+        <section id="contact">
+            <!-- Contact Section -->
+            <h2>Contact Me</h2>
+            <p>You can reach out to me through the following channels:</p>
+            <ul>
+                <li>Email: yourname@example.com</li>
+                <li>Phone: +1234567890</li>
+                <!-- Add more contact details -->
+            </ul>
+        </section>
+    </main>
 
-    echo '<label for="cwpai_profile_experience">Experience</label>';
-    echo '<textarea id="cwpai_profile_experience" name="cwpai_profile_experience" rows="5" cols="50">' . esc_textarea($experience) . '</textarea><br>';
-    echo '<label for="cwpai_profile_certificates">Certificates</label>';
-    echo '<textarea id="cwpai_profile_certificates" name="cwpai_profile_certificates" rows="5" cols="50">' . esc_textarea($certificates) . '</textarea><br>';
-    echo '<label for="cwpai_profile_pictures">Pictures (URLs, separated by commas)</label>';
-    echo '<input type="text" id="cwpai_profile_pictures" name="cwpai_profile_pictures" value="' . esc_attr($pictures) . '" size="50"><br>';
-}
+    <footer>
+        <!-- Footer Section -->
+        <p>&copy; 2024 Your Name</p>
+    </footer>
 
-function cwpai_save_profile_meta_box_data($post_id) {
-    if (!isset($_POST['cwpai_profile_meta_box_nonce']) || !wp_verify_nonce($_POST['cwpai_profile_meta_box_nonce'], 'cwpai_profile_save_meta_box_data')) return;
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
-    if (isset($_POST['cwpai_profile_experience']) && isset($_POST['cwpai_profile_certificates']) && isset($_POST['cwpai_profile_pictures'])) {
-        update_post_meta($post_id, '_cwpai_profile_experience', sanitize_text_field($_POST['cwpai_profile_experience']));
-        update_post_meta($post_id, '_cwpai_profile_certificates', sanitize_text_field($_POST['cwpai_profile_certificates']));
-        update_post_meta($post_id, '_cwpai_profile_pictures', sanitize_text_field($_POST['cwpai_profile_pictures']));
-    }
-}
-add_action('save_post', 'cwpai_save_profile_meta_box_data');
+    <script src="script.js"></script>
+</body>
+</html>
